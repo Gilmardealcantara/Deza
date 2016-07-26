@@ -17,5 +17,4 @@ def load_user(user_id):
     return User.get(user_id)
 
 
-
 from app import views

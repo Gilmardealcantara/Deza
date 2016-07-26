@@ -1,46 +1,34 @@
-from flask import Flask, render_template, flash, redirect, abort, request
+from flask import render_template, redirect, request
 from app import app
 from forms import LoginForm
 from models import User
+from flask.ext.login import login_user
+from app.utils.encode import sha512
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
     form = LoginForm()
-    if request.method == "POST":
-        pass
 
-    else:
-        return render_template('login.html', form=form)
+        if request.method == "POST":
+            
+            import pdb; pdb.set_trace()
 
+            try:
+                user = User.query.filter_by(
+                    email=form.email.data,
+                    password=sha512(form.password.data)
+                )[-1]
+                login_user(user, remember=True)
+                redir = request.args.get("next", "/")
+                return redirect(redir)
+            except:
+                return render_template('login.html', form=form)
 
+    return render_template('login.html', form=form)
 
 
 @app.route('/')
 def index():
     return render_template('login.html')
-
-
-
-
-
-
-
-
-    '''
-    if form.validate_on_submit():
-        # Login and validate the user.
-        # user should be an instance of your `User` class
-        login_user(user)
-
-        flash('Logged in successfully.')
-
-        next = flask.request.args.get('next')
-        # next_is_valid should check if the user has valid
-        # permission to access the `next` url
-        if not next_is_valid(next):
-            return abort(400)
-
-        return redirect(next or flask.url_for('index'))
-    '''
