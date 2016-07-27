@@ -12,6 +12,4 @@ lm.login_view = "/login"
 app.secret_key = 's3cr3t'
 lm.init_app(app)
 
-
-
 from app import views
