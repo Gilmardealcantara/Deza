@@ -12,9 +12,6 @@ lm.login_view = "/login"
 app.secret_key = 's3cr3t'
 lm.init_app(app)
 
-@lm.user_loader
-def load_user(user_id):
-    return User.get(user_id)
 
 
 from app import views

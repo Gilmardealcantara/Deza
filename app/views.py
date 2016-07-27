@@ -11,8 +11,9 @@ def login():
 
     form = LoginForm()
 
+    if form.validate_on_submit():
         if request.method == "POST":
-            
+
             import pdb; pdb.set_trace()
 
             try:
@@ -25,6 +26,8 @@ def login():
                 return redirect(redir)
             except:
                 return render_template('login.html', form=form)
+        else:
+            return render_template('login.html', form=form)
 
     return render_template('login.html', form=form)
 
