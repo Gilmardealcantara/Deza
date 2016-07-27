@@ -11,22 +11,19 @@ def login():
 
     form = LoginForm()
 
-    if form.validate_on_submit():
-        if request.method == "POST":
+    if request.method == "POST":
 
-            import pdb; pdb.set_trace()
+        import pdb; pdb.set_trace()
 
-            try:
-                user = User.query.filter_by(
-                    email=form.email.data,
-                    password=sha512(form.password.data)
-                )[-1]
-                login_user(user, remember=True)
-                redir = request.args.get("next", "/")
-                return redirect(redir)
-            except:
-                return render_template('login.html', form=form)
-        else:
+        try:
+            user = User.query.filter_by(
+                email=form.email.data,
+                password=sha512(form.password.data)
+            )[-1]
+            login_user(user, remember=True)
+            redir = request.args.get("next", "/")
+            return redirect(redir)
+        except:
             return render_template('login.html', form=form)
 
     return render_template('login.html', form=form)
