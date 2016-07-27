@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+
 {% block body %}
   <h2>Login</h2>
   <form action="{{ url_for('login') }}" method=post>
@@ -6,7 +8,7 @@
       <dd><input type=email name=email>
       <dt>Password:
       <dd><input type=password name=password>
-      <dd><input type=submit value=Login>
+      <dd><input id='login' type=submit value=Login>
     </dl>
   </form>
 {% endblock %}
