@@ -1,11 +1,11 @@
-from flask import render_template, redirect, request, jsonify, Response
+from flask import render_template, redirect, request, jsonify
 from app import app
 from forms import LoginForm
 from models import User
 from flask.ext.login import login_user, logout_user
 from app.utils.encode import sha512
 from app import lm
-import csv
+
 
 @lm.user_loader
 def load_user(id):
@@ -41,13 +41,18 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/download")
-def hello():
-    return '''
-        <html><body>
-        Hello. <a href="/getPlotCSV">Click me.</a>
-        </body></html>
-        '''
+@app.route('/data/')
+def data():
+    users = User.query.all()
+    json = []
+    for user in users:
+        json = (
+            user.id,
+            user.name,
+            user.email
+        )
+
+    return jsonify(json=json)
 
 
 @app.route("/getPlotCSV")

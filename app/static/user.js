@@ -8,4 +8,18 @@ $( document ).ready(function() {
         $('#session')[0].href = '/login'
         $('#session')[0].text = 'login'
     });
+
+    $('#download').click(function(){
+        $.ajax({
+            dataType: 'json',
+            method: 'GET',
+            url: '/data',
+            success: function (response) {
+                debugger
+                //tranformar para csv e implementar download js
+                
+            }
+        });
+    });
+
 });
