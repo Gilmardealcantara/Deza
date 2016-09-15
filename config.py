@@ -8,8 +8,9 @@ create table users(
 );
 
 
-insert into users (name, email, passord) values('Admin','admin@teste.com','123');   
+insert into users (name, email, password) values('Admin','admin@teste.com','123');
+insert into users (name, email, password) values('gilmar','admin@teste.com','123');   
 
 '''
 
-SQLALCHEMY_DATABASE_URI = "mysql://root:131313@localhost/teste"
+SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost/teste"

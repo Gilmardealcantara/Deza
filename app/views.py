@@ -44,13 +44,15 @@ def index():
 @app.route('/data/')
 def data():
     users = User.query.all()
-    json = []
+    json = {}
+    data = [];
     for user in users:
-        json = (
+        data.append((
             user.id,
             user.name,
             user.email
-        )
+        ))
+    json['data'] = data
 
     return jsonify(json=json)
 
