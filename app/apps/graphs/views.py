@@ -9,6 +9,10 @@ mod = Blueprint('graphs', __name__, template_folder='templates', url_prefix='/gr
 def area():
 	return render_template('graphs/area_chart.html')
 
+@mod.route('/stack')
+def stack():
+	return render_template('graphs/stack.html')
+
 
 @mod.route('/data')
 def data_servise():
