@@ -4,7 +4,7 @@ $( document ).ready(function() {
         $.ajax({
             dataType: 'json',
             method: 'GET',
-            url: '/data',
+            url: '/user/data',
             success: function (response) {
                 var csv = '';
                 response.json.data.forEach(function(row){

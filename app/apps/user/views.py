@@ -1,20 +1,22 @@
-from flask import render_template, redirect, request, jsonify, g
+from flask import Blueprint, render_template, redirect, request, jsonify, g, url_for
 from app import app
 from forms import LoginForm
 from models import User
 from flask.ext.login import login_user, logout_user, current_user
-from app.utils.encode import sha512
+from app.apps.utils.encode import sha512
 from app import lm
 from urlparse import urlparse
 
-
+mod = Blueprint('user', __name__,
+                template_folder='templates',
+                url_prefix='/user')
 
 @lm.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@mod.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
 
@@ -23,26 +25,20 @@ def login():
             # user = User.query.filter_by(email=form.email.data, password=sha512(form.password.data))[-1]
             user = User.query.filter_by(email=form.email.data, password=form.password.data)[-1]
             login_user(user, remember=True)
-            redir = request.args.get("next", "/")
-            return redirect(redir)
+            return redirect('/')
         except:
-            return render_template('login.html', form=form)
+            return render_template('user/login.html', form=form)
 
-    return render_template('login.html', form=form)
+    return render_template('user/login.html', form=form)
 
 
-@app.route('/logout/')
+@mod.route('/logout/')
 def logout():
     logout_user()
     return redirect('/')
 
 
-@app.route('/')
-def index():
-    return render_template('index.html', g=g)
-
-
-@app.route('/data/')
+@mod.route('/data/')
 def data():
     users = User.query.all()
     json = {}
@@ -58,7 +54,8 @@ def data():
     return jsonify(json=json)
 
 
-@app.route("/getPlotCSV")
+''' feito no js
+@mod.route("/getPlotCSV")
 def getPlotCSV():
     users = User.query.all()
 
@@ -71,3 +68,4 @@ def getPlotCSV():
         mimetype="text/csv",
         headers={"Content-disposition":
                  "attachment; filename=myplot.csv"})
+'''
