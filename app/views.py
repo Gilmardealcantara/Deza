@@ -1,10 +1,12 @@
-from flask import render_template, redirect, request, jsonify
+from flask import render_template, redirect, request, jsonify, g
 from app import app
 from forms import LoginForm
 from models import User
-from flask.ext.login import login_user, logout_user
+from flask.ext.login import login_user, logout_user, current_user
 from app.utils.encode import sha512
 from app import lm
+from urlparse import urlparse
+
 
 
 @lm.user_loader
@@ -14,7 +16,6 @@ def load_user(id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
     form = LoginForm()
 
     if request.method == "POST":
@@ -38,7 +39,7 @@ def logout():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', g=g)
 
 
 @app.route('/data/')
