@@ -52,3 +52,7 @@
 	.dropdown:hover .dropdown-content {
 	    display: block;
 	}
+
+	body {
+	  font: 10px sans-serif;
+	}
