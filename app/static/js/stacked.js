@@ -2,8 +2,8 @@
 // config references
 var stackedConfig = {
     target : 'stacked',
-    ///graphs/data?graph=data_sc.json
-    data_url : '/graphs/dataviva',
+    data_url : '/graphs/data?graph=data_sc.json',
+    //data_url : '/graphs/dataviva',
     width: 1700,
     height: 800,
     val: 90
@@ -35,7 +35,6 @@ function init() {
 
 init();
 
-
 // graph
 
 function stacked(data){
@@ -66,7 +65,6 @@ function stacked(data){
 	var g = svg.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	
 
 	//trada dados, year e values
 	// indice 6 bra_id, 3 matriculados
@@ -98,10 +96,20 @@ function stacked(data){
 	z.domain(keys);
 		stack.keys(keys);
 
-		var layer = g.selectAll(".layer")
+	var layer = g.selectAll(".layer")
 	    .data(stack(data))
 	    .enter().append("g")
-	    .attr("class", "layer");
+	    .attr("class", "layer")
+	    .on("mouseover", function(d, i){
+	    	d3.select("#tooltip")
+	    		.select("#value")
+	    		.text(i);
+
+	    	d3.select("#tooltip").classed("hidden", false);
+	    })
+	    .on("mouseout", function(){
+	    	d3.select("#tooltip").classed("hidden", true);
+	    });
   	
   	layer.append("path")
       	.attr("class", "area")
@@ -131,5 +139,4 @@ function stacked(data){
       		.ticks(20)
       		.tickFormat(d3.formatPrefix(".1", 1e6))
       	);
-
 }

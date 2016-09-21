@@ -2,11 +2,15 @@
 
 {% block body %}
 	<h1> Stacked Graph - Dataviva </h1>
-	<h2>Number of Enrolled for basic course	</h2>
+	<h2>School Census in Brazil by Location (2007-2014)</h2>
+	<div id="tooltip" class="hidden">
+		<p><strong>Important label Heading</strong></p>
+		<p><span id="value">100</span></p>
+	</div>
 	<section id='stacked'></section>
 	<script src="//d3js.org/d3.v4.min.js"></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script> 	
 	<script type="text/javascript" src="/static/js/stacked.js"></script>
-
+	<link rel="stylesheet" type="text/css" href="/static/css/stacked.css">
 
 {% endblock %}
