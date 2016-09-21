@@ -20,6 +20,10 @@ var area = d3.area()
 var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+
+
+
+
 d3.tsv("/graphs/data?graph=stack.tsv", type, function(error, data) {
   if (error) throw error;
 
@@ -32,7 +36,7 @@ d3.tsv("/graphs/data?graph=stack.tsv", type, function(error, data) {
   var layer = g.selectAll(".layer")
     .data(stack(data))
     .enter().append("g")
-      .attr("class", "layer");
+    .attr("class", "layer");
 
   layer.append("path")
       .attr("class", "area")
