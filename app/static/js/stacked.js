@@ -63,72 +63,73 @@ function stacked(data){
 	    .y0(function(d) { return y(d[0]); })
 	    .y1(function(d) { return y(d[1]); });
 
-
 	var g = svg.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	    	//trada dados, year e values
-	    	// indice 6 bra_id, 3 matriculados
-	       	var aux = {};
-	       	data.data.forEach(function(row){
-	    		var location = row[6].slice(0,3);
-	    		var year = row[0]
-	    		var enrolled = row[3]
+	
 
-	    		if(!aux[year]){ 
-	    			aux[year] = {};
-	    			aux[year]['year'] = year;
-	    		}
+	//trada dados, year e values
+	// indice 6 bra_id, 3 matriculados
+   	var aux = {};
+   	data.data.forEach(function(row){
+		var location = row[6].slice(0,3);
+		var year = row[0]
+		var enrolled = row[3]
 
-	    		if(aux[year][location])
-	    			aux[year][location] += enrolled/10000000;
-	    		else
-	    			aux[year][location] = enrolled/10000000;
-	    	});
+		if(!aux[year]){ 
+			aux[year] = {};
+			aux[year]['year'] = year;
+		}
 
-	       	data = []
-	    	Object.keys(aux).forEach(function(year){
-	    		data.push(aux[year])
-	    	}); // cria lista
+		if(aux[year][location])
+			aux[year][location] += enrolled/10000000;
+		else
+			aux[year][location] = enrolled/10000000;
+	});
 
-	    	keys = Object.keys(data[0]).slice(1); // esdados
+   	data = []
+	Object.keys(aux).forEach(function(year){
+		data.push(aux[year])
+	}); // cria lista
 
-	    	x.domain(d3.extent(data, function(d) { return d.year; }));
-	    	z.domain(keys);
-	  		stack.keys(keys);
+	keys = Object.keys(data[0]).slice(1); // esdados
 
-	  		var layer = g.selectAll(".layer")
-			    .data(stack(data))
-			    .enter().append("g")
-			    .attr("class", "layer");
-		  	
-		  	layer.append("path")
-		      	.attr("class", "area")
-		      	.style("fill", function(d) { return z(d.key); })
-		      	.attr("d", area);
+	x.domain(d3.extent(data, function(d) { return d.year; }));
+	z.domain(keys);
+		stack.keys(keys);
 
-		  	layer.filter(function(d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })
-		    	.append("text")
-			    .attr("x", width - 6)
-			    .attr("y", function(d) { return y((d[d.length - 1][0] + d[d.length - 1][1]) / 2); })
-			    .attr("dy", ".35em")
-			    .style("font", "10px sans-serif")
-			    .style("text-anchor", "end")
-			    .text(function(d) { return d.key.slice(1,3).toUpperCase(); });
+		var layer = g.selectAll(".layer")
+	    .data(stack(data))
+	    .enter().append("g")
+	    .attr("class", "layer");
+  	
+  	layer.append("path")
+      	.attr("class", "area")
+      	.style("fill", function(d) { return z(d.key); })
+      	.attr("d", area);
 
-			y.domain([0, 100000000]);
-		  	g.append("g")
-		      	.attr("class", "axis axis--x")
-		      	.attr("transform", "translate(0," + height + ")")
-		     	.call(d3.axisBottom(x)
-		     		.tickFormat(d3.format("d"))
-		     	);
+  	layer.filter(function(d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })
+    	.append("text")
+	    .attr("x", width - 6)
+	    .attr("y", function(d) { return y((d[d.length - 1][0] + d[d.length - 1][1]) / 2); })
+	    .attr("dy", ".35em")
+	    .style("font", "10px sans-serif")
+	    .style("text-anchor", "end")
+	    .text(function(d) { return d.key.slice(1,3).toUpperCase(); });
 
-		  	g.append("g")
-		      	.attr("class", "axis axis--y")
-		      	.call(d3.axisLeft(y)
-		      		.ticks(20)
-		      		.tickFormat(d3.formatPrefix(".1", 1e6))
-		      	);
+	y.domain([0, 100000000]);
+  	g.append("g")
+      	.attr("class", "axis axis--x")
+      	.attr("transform", "translate(0," + height + ")")
+     	.call(d3.axisBottom(x)
+     		.tickFormat(d3.format("d"))
+     	);
+
+  	g.append("g")
+      	.attr("class", "axis axis--y")
+      	.call(d3.axisLeft(y)
+      		.ticks(20)
+      		.tickFormat(d3.formatPrefix(".1", 1e6))
+      	);
 
 }
