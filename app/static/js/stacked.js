@@ -29,7 +29,7 @@ function init() {
         d3.json(stackedConfig.data_url, function(data) {
             spinner.stop();
             stacked(data);
-            
+
             $('.axis .tick text')
 		        .attr("font-size", "15px")
 		        .attr("fill", "#666666")
@@ -41,8 +41,8 @@ function init() {
 
 init();
 
-// graph
 
+// graph
 function stacked(data){
 
 	var w = stackedConfig.width;
@@ -53,7 +53,7 @@ function stacked(data){
 				.attr('width', w)
 				.attr('height', h);
 	
-	var margin = {top: 20, right: 20, bottom: 30, left: 200},
+	var margin = {top: 20, right: 20, bottom: 100, left: 200},
 	    width = svg.attr("width") - margin.left - margin.right,
 	    height = svg.attr("height") - margin.top - margin.bottom;
 
