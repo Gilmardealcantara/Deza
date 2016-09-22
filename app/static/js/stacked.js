@@ -5,7 +5,7 @@ var stackedConfig = {
     data_url : '/graphs/data?graph=data_sc.json',
     //data_url : '/graphs/dataviva',
     width: 1700,
-    height: 800,
+    height: 700,
     val: 90
 };
 
@@ -29,8 +29,14 @@ function init() {
         d3.json(stackedConfig.data_url, function(data) {
             spinner.stop();
             stacked(data);
+            
+            $('.axis .tick text')
+		        .attr("font-size", "15px")
+		        .attr("fill", "#666666")
+		        .attr("font-weight", "normal")
+		        .attr("font-family", "sans-serif")
         });
-    }, 1500);
+    }, 150);
 } 
 
 init();
@@ -47,7 +53,7 @@ function stacked(data){
 				.attr('width', w)
 				.attr('height', h);
 	
-	var margin = {top: 20, right: 20, bottom: 30, left: 100},
+	var margin = {top: 20, right: 20, bottom: 30, left: 200},
 	    width = svg.attr("width") - margin.left - margin.right,
 	    height = svg.attr("height") - margin.top - margin.bottom;
 
@@ -94,7 +100,7 @@ function stacked(data){
 
 	x.domain(d3.extent(data, function(d) { return d.year; }));
 	z.domain(keys);
-		stack.keys(keys);
+	stack.keys(keys);
 
 	var layer = g.selectAll(".layer")
 	    .data(stack(data))
@@ -105,13 +111,13 @@ function stacked(data){
 	    	$('.layer').mousemove(function(event){
 	    		var xPosition = event.pageX + 20;
 	 			var yPosition = event.pageY + 20; 
-	    	
+	    		
 
 		    	d3.select("#tooltip")
 		    		.style("left", xPosition + "px" )
 		    		.style("top", yPosition + "px")
 		    		.select("#value")
-		    		.text(i);
+		    		.text(this.textContent);
 
 		    	d3.select("#tooltip").classed("hidden", false);
 	    	});
@@ -124,6 +130,7 @@ function stacked(data){
       	.attr("class", "area")
       	.style("fill", function(d) { return z(d.key); })
       	.attr("d", area);
+
 
   	layer.filter(function(d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })
     	.append("text")
@@ -148,11 +155,24 @@ function stacked(data){
       		.ticks(20)
       		.tickFormat(d3.formatPrefix(".1", 1e6))
       	);
-//      	.append("text")
-//	      .attr("transform", "rotate(-90)")
-//	      .attr("x", 10)
-//	      .attr("y", "0")
-//	      .attr("dy", ".71em")
-//	      .style("text-anchor", "end")
-//	      .text("Enrolled)");
+
+        // now add titles to the axes
+        // font-family="sans-serif" font-weight="normal" font-size="22px" fill="#444" dominant-baseline="central" style="text-anchor: middle;
+        svg.append("text")
+            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+            .attr("transform", "translate("+ (margin.left/2) +","+(height/2)+")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
+            .attr("font-size", "22px")
+            .attr("fill", "#444")
+            .attr("font-weight", "normal")
+            .attr("font-family", "sans-serif")
+            .text("Enrolled");
+
+        svg.append("text")
+            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+            .attr("transform", "translate("+ (width/2) +","+(height + margin.left/2)+")")  // centre below axis
+            .attr("font-size", "22px")
+            .attr("fill", "#444")
+            .attr("font-weight", "normal")
+            .attr("font-family", "sans-serif")
+            .text("Years");
 }
