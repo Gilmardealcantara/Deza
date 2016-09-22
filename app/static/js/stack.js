@@ -19,47 +19,44 @@ var area = d3.area()
 
 var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-
-
+    
 
 d3.tsv("/graphs/data?graph=stack.tsv", type, function(error, data) {
-  if (error) throw error;
+    if (error) throw error;
 
-  var keys = data.columns.slice(1);
+    var keys = data.columns.slice(1);
 
-  x.domain(d3.extent(data, function(d) { return d.date; }));
-  z.domain(keys);
-  stack.keys(keys);
+    x.domain(d3.extent(data, function(d) { return d.date; }));
+    z.domain(keys);
+    stack.keys(keys);
 
-  var layer = g.selectAll(".layer")
-    .data(stack(data))
-    .enter().append("g")
-    .attr("class", "layer");
+    var layer = g.selectAll(".layer")
+      .data(stack(data))
+      .enter().append("g")
+      .attr("class", "layer");
 
-  layer.append("path")
-      .attr("class", "area")
-      .style("fill", function(d) { return z(d.key); })
-      .attr("d", area);
+    layer.append("path")
+        .attr("class", "area")
+        .style("fill", function(d) { return z(d.key); })
+        .attr("d", area);
 
-  layer.filter(function(d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })
-    .append("text")
-      .attr("x", width - 6)
-      .attr("y", function(d) { return y((d[d.length - 1][0] + d[d.length - 1][1]) / 2); })
-      .attr("dy", ".35em")
-      .style("font", "10px sans-serif")
-      .style("text-anchor", "end")
-      .text(function(d) { return d.key; });
+    layer.filter(function(d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })
+      .append("text")
+        .attr("x", width - 6)
+        .attr("y", function(d) { return y((d[d.length - 1][0] + d[d.length - 1][1]) / 2); })
+        .attr("dy", ".35em")
+        .style("font", "10px sans-serif")
+        .style("text-anchor", "end")
+        .text(function(d) { return d.key; });
 
-  g.append("g")
-      .attr("class", "axis axis--x")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+    g.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
 
-  g.append("g")
-      .attr("class", "axis axis--y")
-      .call(d3.axisLeft(y).ticks(10, "%"));
+    g.append("g")
+        .attr("class", "axis axis--y")
+        .call(d3.axisLeft(y).ticks(10, "%"));
 });
 
 function type(d, i, columns) {

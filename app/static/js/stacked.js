@@ -47,7 +47,7 @@ function stacked(data){
 				.attr('width', w)
 				.attr('height', h);
 	
-	var margin = {top: 20, right: 20, bottom: 30, left: 50},
+	var margin = {top: 20, right: 20, bottom: 30, left: 100},
 	    width = svg.attr("width") - margin.left - margin.right,
 	    height = svg.attr("height") - margin.top - margin.bottom;
 
@@ -101,11 +101,20 @@ function stacked(data){
 	    .enter().append("g")
 	    .attr("class", "layer")
 	    .on("mouseover", function(d, i){
-	    	d3.select("#tooltip")
-	    		.select("#value")
-	    		.text(i);
 
-	    	d3.select("#tooltip").classed("hidden", false);
+	    	$('.layer').mousemove(function(event){
+	    		var xPosition = event.pageX + 20;
+	 			var yPosition = event.pageY + 20; 
+	    	
+
+		    	d3.select("#tooltip")
+		    		.style("left", xPosition + "px" )
+		    		.style("top", yPosition + "px")
+		    		.select("#value")
+		    		.text(i);
+
+		    	d3.select("#tooltip").classed("hidden", false);
+	    	});
 	    })
 	    .on("mouseout", function(){
 	    	d3.select("#tooltip").classed("hidden", true);
@@ -139,4 +148,11 @@ function stacked(data){
       		.ticks(20)
       		.tickFormat(d3.formatPrefix(".1", 1e6))
       	);
+//      	.append("text")
+//	      .attr("transform", "rotate(-90)")
+//	      .attr("x", 10)
+//	      .attr("y", "0")
+//	      .attr("dy", ".71em")
+//	      .style("text-anchor", "end")
+//	      .text("Enrolled)");
 }
