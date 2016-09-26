@@ -30,7 +30,7 @@ function init() {
             spinner.stop();
             stacked(data);
 
-            $('.axis .tick text')
+            $('.axis .tick text, .textlayers')
 		        .attr("font-size", "15px")
 		        .attr("fill", "#666666")
 		        .attr("font-weight", "normal")
@@ -108,9 +108,12 @@ function stacked(data){
 	    .attr("class", "layer")
 	    .on("mouseover", function(d, i){
 
-	    	$('.layer').mousemove(function(event){
-	    		var xPosition = event.pageX + 20;
-	 			var yPosition = event.pageY + 20; 
+	    	var htmlListG =  $(this)[0].innerHTML.split('"');
+	    	var yValue = htmlListG[htmlListG.indexOf(" y=") + 1];
+
+	    	//$('.layer').mousemove(function(event){
+	    		var xPosition = w/2; //event.pageX + 20;
+	 			var yPosition = yValue; //event.pageY + 20; 
 	    		
 
 		    	d3.select("#tooltip")
@@ -120,7 +123,7 @@ function stacked(data){
 		    		.text(this.textContent);
 
 		    	d3.select("#tooltip").classed("hidden", false);
-	    	});
+	    	//});
 	    })
 	    .on("mouseout", function(){
 	    	d3.select("#tooltip").classed("hidden", true);
@@ -134,12 +137,14 @@ function stacked(data){
 
   	layer.filter(function(d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })
     	.append("text")
+    	.attr("class", "textlayers")
 	    .attr("x", width - 6)
 	    .attr("y", function(d) { return y((d[d.length - 1][0] + d[d.length - 1][1]) / 2); })
 	    .attr("dy", ".35em")
 	    .style("font", "10px sans-serif")
 	    .style("text-anchor", "end")
-	    .text(function(d) { return d.key.slice(1,3).toUpperCase(); });
+	    .text(function(d) { return d.key.slice(1,3).toUpperCase(); 
+	    });
 
 	y.domain([0, 100000000]);
   	g.append("g")
