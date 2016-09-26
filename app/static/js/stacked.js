@@ -172,7 +172,7 @@ function stacked(data){
      	.call(d3.axisBottom(x)
      		.ticks(20)
       		//.tickSize(-(height  + 50), 0, 0)
-      		//.tickFormat(d3.format("d"))
+      		.tickFormat(d3.format("d"))
      	);
 
   	g.append("g")
@@ -180,7 +180,7 @@ function stacked(data){
       	.call(d3.axisLeft(y)
       		.ticks(20)
       		//.tickSize(-(width + 5), 0, 0)
-      		//.tickFormat(d3.formatPrefix(".1", 1e6))
+      		.tickFormat(d3.formatPrefix(".1", 1e6))
       	);
 
 
