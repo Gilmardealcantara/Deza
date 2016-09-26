@@ -30,11 +30,15 @@ function init() {
             spinner.stop();
             stacked(data);
 
-            $('.axis .tick text, .textlayers')
+            $('.axis .tick text')
 		        .attr("font-size", "15px")
 		        .attr("fill", "#666666")
 		        .attr("font-weight", "normal")
-		        .attr("font-family", "sans-serif")
+		        .attr("font-family", "sans-serif");
+
+		    $('.textlayers').attr("fill", "#1d3335");
+
+		    $('.axis .tick line').attr("stroke", "#666666")
         });
     }, 150);
 } 
@@ -138,7 +142,7 @@ function stacked(data){
   	layer.filter(function(d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })
     	.append("text")
     	.attr("class", "textlayers")
-	    .attr("x", width - 6)
+	    .attr("x", width - 50)
 	    .attr("y", function(d) { return y((d[d.length - 1][0] + d[d.length - 1][1]) / 2); })
 	    .attr("dy", ".35em")
 	    .style("font", "10px sans-serif")
@@ -151,33 +155,37 @@ function stacked(data){
       	.attr("class", "axis axis--x")
       	.attr("transform", "translate(0," + height + ")")
      	.call(d3.axisBottom(x)
-     		.tickFormat(d3.format("d"))
+     		.ticks(20)
+      		.tickSize(-(height  + 50), 0, 0)
+      		.tickFormat(d3.format("d"))
      	);
 
   	g.append("g")
       	.attr("class", "axis axis--y")
       	.call(d3.axisLeft(y)
       		.ticks(20)
+      		.tickSize(-(width + 5), 0, 0)
       		.tickFormat(d3.formatPrefix(".1", 1e6))
       	);
 
-        // now add titles to the axes
-        // font-family="sans-serif" font-weight="normal" font-size="22px" fill="#444" dominant-baseline="central" style="text-anchor: middle;
-        svg.append("text")
-            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
-            .attr("transform", "translate("+ (margin.left/2) +","+(height/2)+")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
-            .attr("font-size", "22px")
-            .attr("fill", "#444")
-            .attr("font-weight", "normal")
-            .attr("font-family", "sans-serif")
-            .text("Enrolled");
 
-        svg.append("text")
-            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
-            .attr("transform", "translate("+ (width/2) +","+(height + margin.left/2)+")")  // centre below axis
-            .attr("font-size", "22px")
-            .attr("fill", "#444")
-            .attr("font-weight", "normal")
-            .attr("font-family", "sans-serif")
-            .text("Years");
+    // now add titles to the axes
+    // font-family="sans-serif" font-weight="normal" font-size="22px" fill="#444" dominant-baseline="central" style="text-anchor: middle;
+    svg.append("text")
+        .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+        .attr("transform", "translate("+ (margin.left/2) +","+(height/2)+")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
+        .attr("font-size", "22px")
+        .attr("fill", "#444")
+        .attr("font-weight", "normal")
+        .attr("font-family", "sans-serif")
+        .text("Enrolled");
+
+    svg.append("text")
+        .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+        .attr("transform", "translate("+ (width/2) +","+(height + margin.left/2)+")")  // centre below axis
+        .attr("font-size", "22px")
+        .attr("fill", "#444")
+        .attr("font-weight", "normal")
+        .attr("font-family", "sans-serif")
+        .text("Years");
 }
