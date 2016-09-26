@@ -111,23 +111,33 @@ function stacked(data){
 	    .enter().append("g")
 	    .attr("class", "layer")
 	    .on("mouseover", function(d, i){
+	    	var state = this.textContent,
+	   			num_enrolled = (d[d.length -1].data[keys[i]] * 40000000).toString().split('.')[0],
+	    	 	year = d[d.length -1].data.year;
 
-	    	var htmlListG =  $(this)[0].innerHTML.split('"');
-	    	var yValue = htmlListG[htmlListG.indexOf(" y=") + 1];
+	    	var htmlListG =  $(this)[0].innerHTML.split('"'),
+	    		yValue = htmlListG[htmlListG.indexOf(" y=") + 1];
+    		
+    		var xPosition = w/2, 
+ 				yPosition = yValue; 
+    		
 
-	    	//$('.layer').mousemove(function(event){
-	    		var xPosition = w/2; //event.pageX + 20;
-	 			var yPosition = yValue; //event.pageY + 20; 
-	    		
+	    	d3.select("#tooltip")
+	    		.style("left", xPosition + "px" )
+	    		.style("top", yPosition + "px")
+	    		.select("#value2")
+	    		.text("Enrolled : " + num_enrolled);
 
-		    	d3.select("#tooltip")
-		    		.style("left", xPosition + "px" )
-		    		.style("top", yPosition + "px")
-		    		.select("#value")
-		    		.text(this.textContent);
+	    	d3.select("#tooltip")
+	    		.select("#value1")
+	    		.text("Year: " + year);
 
-		    	d3.select("#tooltip").classed("hidden", false);
-	    	//});
+	    	d3.select("#tooltip")
+	    		.select("#title")
+	    		.text(state);
+
+	    	d3.select("#tooltip").classed("hidden", false);
+	    	
 	    })
 	    .on("mouseout", function(){
 	    	d3.select("#tooltip").classed("hidden", true);
