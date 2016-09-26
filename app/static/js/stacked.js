@@ -86,9 +86,9 @@ function stacked(data){
 		}
 
 		if(aux[year][location])
-			aux[year][location] += enrolled/10000000;
+			aux[year][location] += (enrolled/40000000);
 		else
-			aux[year][location] = enrolled/10000000;
+			aux[year][location] = (enrolled/40000000);
 	});
 
    	data = []
@@ -146,7 +146,7 @@ function stacked(data){
 	    .text(function(d) { return d.key.slice(1,3).toUpperCase(); 
 	    });
 
-	y.domain([0, 100000000]);
+	y.domain([0, 40000000]);
   	g.append("g")
       	.attr("class", "axis axis--x")
       	.attr("transform", "translate(0," + height + ")")
