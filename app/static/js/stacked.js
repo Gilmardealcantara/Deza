@@ -102,7 +102,7 @@ function stacked(data){
 
 	keys = Object.keys(data[0]).slice(1); // esdados
 
-	x.domain(d3.extent(data, function(d) { return d.year; }));
+	x.domain(d3.extent	(data, function(d) { return d.year; }));
 	z.domain(keys);
 	stack.keys(keys);
 
@@ -137,9 +137,14 @@ function stacked(data){
 	    		.text(state);
 
 	    	d3.select("#tooltip").classed("hidden", false);
-	    	
+	    	var color = $('.layer .area')[i].style.fill;
+
+	    	$('.layer .area')[i].style.fill = change_color(color, true);	
 	    })
-	    .on("mouseout", function(){
+	    .on("mouseout", function(d, i){
+	    	var color = $('.layer .area')[i].style.fill;
+
+	    	$('.layer .area')[i].style.fill = change_color(color, false);	
 	    	d3.select("#tooltip").classed("hidden", true);
 	    });
   	
@@ -198,4 +203,23 @@ function stacked(data){
         .attr("font-weight", "normal")
         .attr("font-family", "sans-serif")
         .text("Years");
+}
+
+
+function change_color(color, darkens){
+	var r = (+color.split(',')[0].slice(4));
+	var g = (+color.split(',')[1].slice(1));
+	var b = (+color.split(',')[2].substr(1,(color.split(',')[2].length -2)));
+
+	if(darkens == true){
+		r = (r - 50 < 0 ) ? 0 : r - 50;	    		
+		g = (g - 50 < 0 ) ? 0 : g - 50;
+		b = (b - 50 < 0 ) ? 0 : b - 50;
+	}else{
+		r = (r + 50 > 255 ) ? 255 : r + 50;	    		
+		g = (g + 50 > 255 ) ? 255 : g + 50;
+		b = (b + 50 > 255 ) ? 255 : b + 50;
+	}
+
+	return "rgb("+r+", "+g+", "+b+")"
 }
