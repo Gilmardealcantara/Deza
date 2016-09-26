@@ -171,16 +171,16 @@ function stacked(data){
       	.attr("transform", "translate(0," + height + ")")
      	.call(d3.axisBottom(x)
      		.ticks(20)
-      		.tickSize(-(height  + 50), 0, 0)
-      		.tickFormat(d3.format("d"))
+      		//.tickSize(-(height  + 50), 0, 0)
+      		//.tickFormat(d3.format("d"))
      	);
 
   	g.append("g")
       	.attr("class", "axis axis--y")
       	.call(d3.axisLeft(y)
       		.ticks(20)
-      		.tickSize(-(width + 5), 0, 0)
-      		.tickFormat(d3.formatPrefix(".1", 1e6))
+      		//.tickSize(-(width + 5), 0, 0)
+      		//.tickFormat(d3.formatPrefix(".1", 1e6))
       	);
 
 
@@ -211,7 +211,7 @@ function change_color(color, darkens){
 	var g = (+color.split(',')[1].slice(1));
 	var b = (+color.split(',')[2].substr(1,(color.split(',')[2].length -2)));
 
-	if(darkens == true){
+	if(darkens){
 		r = (r - 50 < 0 ) ? 0 : r - 50;	    		
 		g = (g - 50 < 0 ) ? 0 : g - 50;
 		b = (b - 50 < 0 ) ? 0 : b - 50;
