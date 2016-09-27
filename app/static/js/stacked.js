@@ -170,10 +170,10 @@ function stacked(data){
 	   			num_enrolled = (d[d.length -1].data[keys[i]] * graph.base).toString().split('.')[0],
 	    	 	year = d[d.length -1].data.year;
 
-	    	var htmlListG =  $(this)[0].innerHTML.split('"'),
+	    	var htmlListG = $('svg .layer')[i].innerHTML.split('"'),
 	    		yValue = htmlListG[htmlListG.indexOf(" y=") + 1];
     		
-    		var xPosition = w/2, 
+    		var xPosition = margin.left, 
  				yPosition = yValue; 
     		
 
