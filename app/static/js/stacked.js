@@ -28,6 +28,7 @@ function init() {
     setTimeout(function() {
         d3.json(stackedConfig.data_url, function(data) {
             spinner.stop();
+            data = cleanData(data)
             stacked(data);
 
             $('.axis .tick text')
@@ -42,6 +43,36 @@ function init() {
         });
     }, 150);
 } 
+
+
+function cleanData(data){
+	//trada dados, year e values
+	// indice 6 bra_id, 3 matriculados
+   	var aux = {};
+   	data.data.forEach(function(row){
+		var location = row[6].slice(0,3);
+		var year = row[0]
+		var enrolled = row[3]
+
+		if(!aux[year]){ 
+			aux[year] = {};
+			aux[year]['year'] = year;
+		}
+
+			if(aux[year][location])
+			aux[year][location] += (enrolled/40000000);
+		else
+			aux[year][location] = (enrolled/40000000);
+	});
+
+   	data = []
+	Object.keys(aux).forEach(function(year){
+		data.push(aux[year])
+	}); // cria lista
+
+	return data;
+}
+
 
 init();
 
@@ -74,31 +105,6 @@ function stacked(data){
 
 	var g = svg.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-	//trada dados, year e values
-	// indice 6 bra_id, 3 matriculados
-   	var aux = {};
-   	data.data.forEach(function(row){
-		var location = row[6].slice(0,3);
-		var year = row[0]
-		var enrolled = row[3]
-
-		if(!aux[year]){ 
-			aux[year] = {};
-			aux[year]['year'] = year;
-		}
-
-		if(aux[year][location])
-			aux[year][location] += (enrolled/40000000);
-		else
-			aux[year][location] = (enrolled/40000000);
-	});
-
-   	data = []
-	Object.keys(aux).forEach(function(year){
-		data.push(aux[year])
-	}); // cria lista
 
 	keys = Object.keys(data[0]).slice(1); // esdados
 
