@@ -61,10 +61,14 @@ function updateGraph(){
 		graph.base = 40000000
 		graph.yIndex = 3;
 		graph.yName = 'Enrolled'
-	}else{ // mum schools
+	}else if ($('form input ')[1].checked){ // mum schools
 		graph.base = 160000
 		graph.yIndex = 7;
 		graph.yName = 'Num Schools'
+	}else{
+		graph.base = 1600000
+		graph.yIndex = 2;
+		graph.yName = 'Classes'
 	}
 }
 
