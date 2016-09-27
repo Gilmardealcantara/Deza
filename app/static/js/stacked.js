@@ -181,7 +181,7 @@ function stacked(data){
 	    		.style("left", xPosition + "px" )
 	    		.style("top", yPosition + "px")
 	    		.select("#value2")
-	    		.text("Enrolled : " + num_enrolled);
+	    		.text(graph.yName + ": " + num_enrolled);
 
 	    	d3.select("#tooltip")
 	    		.select("#value1")
