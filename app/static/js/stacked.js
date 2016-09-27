@@ -22,6 +22,12 @@ var opts = {
 };
 
 var target = document.getElementById(stackedConfig.target);
+var graph = {
+	base: 40000000,
+	yName: 'Enrolled',
+	yIndex: 3
+}; // 160000
+
 
 function init() {
     var spinner = new Spinner(opts).spin(target);
@@ -30,6 +36,11 @@ function init() {
             spinner.stop();
             data = cleanData(data)
             stacked(data);
+            $('form').change(function(){
+            	$('svg')[0].remove()
+            	updateGraph();
+            	init()            	
+            })
 
             $('.axis .tick text')
 		        .attr("font-size", "15px")
@@ -44,6 +55,18 @@ function init() {
     }, 150);
 } 
 
+function updateGraph(){
+	var index;
+	if($('form input ')[0].checked){ // enrolled
+		graph.base = 40000000
+		graph.yIndex = 3;
+		graph.yName = 'Enrolled'
+	}else{ // mum schools
+		graph.base = 160000
+		graph.yIndex = 7;
+		graph.yName = 'Num Schools'
+	}
+}
 
 function cleanData(data){
 	//trada dados, year e values
@@ -52,7 +75,7 @@ function cleanData(data){
    	data.data.forEach(function(row){
 		var location = row[6].slice(0,3);
 		var year = row[0]
-		var enrolled = row[3]
+		var enrolled = row[graph.yIndex]
 
 		if(!aux[year]){ 
 			aux[year] = {};
@@ -60,9 +83,9 @@ function cleanData(data){
 		}
 
 			if(aux[year][location])
-			aux[year][location] += (enrolled/40000000);
+			aux[year][location] += (enrolled/graph.base);
 		else
-			aux[year][location] = (enrolled/40000000);
+			aux[year][location] = (enrolled/graph.base);
 	});
 
    	data = []
@@ -118,7 +141,7 @@ function stacked(data){
 	    .attr("class", "layer")
 	    .on("mouseover", function(d, i){
 	    	var state = this.textContent,
-	   			num_enrolled = (d[d.length -1].data[keys[i]] * 40000000).toString().split('.')[0],
+	   			num_enrolled = (d[d.length -1].data[keys[i]] * graph.base).toString().split('.')[0],
 	    	 	year = d[d.length -1].data.year;
 
 	    	var htmlListG =  $(this)[0].innerHTML.split('"'),
@@ -171,7 +194,7 @@ function stacked(data){
 	    .text(function(d) { return d.key.slice(1,3).toUpperCase(); 
 	    });
 
-	y.domain([0, 40000000]);
+	y.domain([0, graph.base]);
   	g.append("g")
       	.attr("class", "axis axis--x")
       	.attr("transform", "translate(0," + height + ")")
@@ -186,12 +209,12 @@ function stacked(data){
       	.call(d3.axisLeft(y)
       		.ticks(20)
       		//.tickSize(-(width + 5), 0, 0)
-      		.tickFormat(d3.formatPrefix(".1", 1e6))
+      		//.tickFormat(d3.formatPrefix(".1", 1e6))
       	);
 
 
     // now add titles to the axes
-    // font-family="sans-serif" font-weight="normal" font-size="22px" fill="#444" dominant-baseline="central" style="text-anchor: middle;
+    // font-family="sans-serif" font-weight="normal" font-size="22px" fill="#444" dominant-graph.baseline="central" style="text-anchor: middle;
     svg.append("text")
         .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
         .attr("transform", "translate("+ (margin.left/2) +","+(height/2)+")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
@@ -199,7 +222,7 @@ function stacked(data){
         .attr("fill", "#444")
         .attr("font-weight", "normal")
         .attr("font-family", "sans-serif")
-        .text("Enrolled");
+        .text(graph.yName);
 
     svg.append("text")
         .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
