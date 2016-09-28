@@ -23,7 +23,6 @@ var opts = {
 
 var target = document.getElementById(stackedConfig.target);
 var graph = {
-	base: 40000000,
 	yName: 'Enrolled',
 	yIndex: 3
 }; // 160000
@@ -61,17 +60,13 @@ function init() {
 
 function updateGraph(){
 	var index;
-	//base : num max, domain 0 - base
 	if($('form input ')[0].checked){ // enrolled
-		graph.base = 40000000
 		graph.yIndex = 3;
 		graph.yName = 'Enrolled'
 	}else if ($('form input ')[1].checked){ // mum schools
-		graph.base = 160000
 		graph.yIndex = 7;
 		graph.yName = 'Num Schools'
 	}else{ // classes
-		graph.base = 1600000
 		graph.yIndex = 2;
 		graph.yName = 'Classes'
 	}
@@ -177,15 +172,33 @@ function stacked(data){
 	z.domain(keys);
 	stack.keys(keys);
 
+	//antes para as linhas de grade ficarem atraz das camadas
+  	g.append("g")
+      	.attr("class", "axis axis--x")
+      	.attr("transform", "translate(0," + height + ")")
+     	.call(d3.axisBottom(x)
+     		.ticks(20)
+      		.tickSize(-height, 0, 0)
+      		.tickFormat(d3.format("d"))
+     	);
+
+  	g.append("g")
+      	.attr("class", "axis axis--y")
+      	.call(d3.axisLeft(y)
+      		.ticks(20)
+      		.tickSize(-width, 0, 0)
+      		//.tickFormat(d3.formatPrefix(".1", 1e6))
+      	);
+
 	var layer = g.selectAll(".layer")
 	    .data(stack(data))
 	    .enter().append("g")
 	    .attr("class", "layer")
 	    .on("mouseover", function(d, i){
 	    	var state = this.textContent,
-	   			num_enrolled = (d[d.length -1].data[keys[i]]).toString().split('.')[0],
-	    	 	year = d[d.length -1].data.year;
-
+	   			value = [d[0].data[keys[i]],d[d.length -1].data[keys[i]]],
+	    	 	year = [d[0].data.year , d[d.length -1].data.year];
+	    	
 	    	var htmlListG = $('svg .layer')[i].innerHTML.split('"'),
 	    		yValue = htmlListG[htmlListG.indexOf(" y=") + 1];
     		
@@ -197,15 +210,19 @@ function stacked(data){
 	    		.style("left", xPosition + "px" )
 	    		.style("top", yPosition + "px")
 	    		.select("#value2")
-	    		.text(graph.yName + ": " + num_enrolled);
+	    		.text(year[1] + ": " +value[1]);
 
 	    	d3.select("#tooltip")
 	    		.select("#value1")
-	    		.text("Year: " + year);
+	    		.text(year[0] + ": " + value[0]);
 
 	    	d3.select("#tooltip")
-	    		.select("#title")
+	    		.select("#title1")
 	    		.text(state);
+
+	    	d3.select("#tooltip")
+	    		.select("#title2")
+	    		.text(graph.yName);
 
 	    	d3.select("#tooltip").classed("hidden", false);
 	    	var color = $('.layer .area')[i].style.fill;
@@ -219,6 +236,8 @@ function stacked(data){
 	    	d3.select("#tooltip").classed("hidden", true);
 	    });
   	
+
+
   	layer.append("path")
       	.attr("class", "area")
       	.style("fill", function(d) { return z(d.key); })
@@ -236,22 +255,6 @@ function stacked(data){
 	    .text(function(d) { return d.key.slice(1,3).toUpperCase(); 
 	    });
 
-  	g.append("g")
-      	.attr("class", "axis axis--x")
-      	.attr("transform", "translate(0," + height + ")")
-     	.call(d3.axisBottom(x)
-     		.ticks(20)
-      		//.tickSize(-(height  + 50), 0, 0)
-      		.tickFormat(d3.format("d"))
-     	);
-
-  	g.append("g")
-      	.attr("class", "axis axis--y")
-      	.call(d3.axisLeft(y)
-      		.ticks(20)
-      		//.tickSize(-(width + 5), 0, 0)
-      		//.tickFormat(d3.formatPrefix(".1", 1e6))
-      	);
 
     // now add titles to the axes
     // font-family="sans-serif" font-weight="normal" font-size="22px" fill="#444" dominant-graph.baseline="central" style="text-anchor: middle;
