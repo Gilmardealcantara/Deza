@@ -45,16 +45,6 @@ function init() {
             	stacked(new_data);
             	style();        	
             })
-
-            $('.axis .tick text')
-		        .attr("font-size", "15px")
-		        .attr("fill", "#666666")
-		        .attr("font-weight", "normal")
-		        .attr("font-family", "sans-serif");
-
-		    $('.textlayers').attr("fill", "#1d3335");
-
-		    $('.axis .tick line').attr("stroke", "#666666")
         });
     }, 150);
 } 
@@ -263,6 +253,7 @@ function stacked(data){
     svg.append("text")
         .attr("text-anchor", "middle")  
         .attr("transform", "translate("+ (margin.left/2) +","+(height/2)+")rotate(-90)") 
+        .attr("font-size", "22px")
         .attr("fill", "#444")
         .attr("font-weight", "normal")
         .attr("font-family", "sans-serif")
