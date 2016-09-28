@@ -103,9 +103,9 @@ function cleanData(data){
 		}
 
 			if(aux[year][location])
-			aux[year][location] += (enrolled/graph.base);
+			aux[year][location] += (enrolled);
 		else
-			aux[year][location] = (enrolled/graph.base);
+			aux[year][location] = (enrolled);
 	});
 
    	data = []
@@ -158,6 +158,7 @@ function stacked(data){
 	keys = Object.keys(data[0]).slice(1); // esdados
 
 	x.domain(d3.extent	(data, function(d) { return d.year; }));
+	y.domain([0, graph.base]);
 	z.domain(keys);
 	stack.keys(keys);
 
@@ -167,13 +168,13 @@ function stacked(data){
 	    .attr("class", "layer")
 	    .on("mouseover", function(d, i){
 	    	var state = this.textContent,
-	   			num_enrolled = (d[d.length -1].data[keys[i]] * graph.base).toString().split('.')[0],
+	   			num_enrolled = (d[d.length -1].data[keys[i]]).toString().split('.')[0],
 	    	 	year = d[d.length -1].data.year;
 
 	    	var htmlListG = $('svg .layer')[i].innerHTML.split('"'),
 	    		yValue = htmlListG[htmlListG.indexOf(" y=") + 1];
     		
-    		var xPosition = margin.left, 
+    		var xPosition = w/2, 
  				yPosition = yValue; 
     		
 
@@ -220,7 +221,6 @@ function stacked(data){
 	    .text(function(d) { return d.key.slice(1,3).toUpperCase(); 
 	    });
 
-	y.domain([0, graph.base]);
   	g.append("g")
       	.attr("class", "axis axis--x")
       	.attr("transform", "translate(0," + height + ")")
