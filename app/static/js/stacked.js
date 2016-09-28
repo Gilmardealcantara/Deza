@@ -116,6 +116,21 @@ function cleanData(data){
 	return data;
 }
 
+function getMaxY(data){
+	var max_sum = 0;
+	for (var i=0; i< data.length; i++){
+		var aux = 0;
+		Object.keys( data[i] )
+			.map(function ( key ) { return (key != 'year') ? data[i][key] : 0; })
+				.forEach(function(ele){
+					aux += ele;
+				});
+
+		if(aux > max_sum) max_sum = aux;	
+	}
+	return max_sum;	
+}
+
 
 init();
 
@@ -157,8 +172,8 @@ function stacked(data){
 
 	keys = Object.keys(data[0]).slice(1); // esdados
 
-	x.domain(d3.extent	(data, function(d) { return d.year; }));
-	y.domain([0, graph.base]);
+	x.domain(d3.extent	(data, function(d) { return d.year; })); 
+	y.domain([0, getMaxY(data)]);
 	z.domain(keys);
 	stack.keys(keys);
 
