@@ -163,24 +163,6 @@ function stacked(data){
 	z.domain(keys);
 	stack.keys(keys);
 
-	//antes para as linhas de grade ficarem atraz das camadas
-  	g.append("g")
-      	.attr("class", "axis axis--x")
-      	.attr("transform", "translate(0," + height + ")")
-     	.call(d3.axisBottom(x)
-     		.ticks(20)
-      		.tickSize(-height, 0, 0)
-      		.tickFormat(d3.format("d"))
-     	);
-
-  	g.append("g")
-      	.attr("class", "axis axis--y")
-      	.call(d3.axisLeft(y)
-      		.ticks(20)
-      		.tickSize(-width, 0, 0)
-      		//.tickFormat(d3.formatPrefix(".1", 1e6))
-      	);
-
 	var layer = g.selectAll(".layer")
 	    .data(stack(data))
 	    .enter().append("g")
@@ -234,8 +216,27 @@ function stacked(data){
 
   	layer.append("path")
       	.attr("class", "area")
+      	.transition()
+		.duration(1000)
       	.style("fill", function(d) { return z(d.key); })
       	.attr("d", area);
+
+  	g.append("g")
+      	.attr("class", "axis axis--x")
+      	.attr("transform", "translate(0," + height + ")")
+      	.call(d3.axisBottom(x)
+     		.ticks(20)
+      		//.tickSize(-height, 0, 0)
+      		.tickFormat(d3.format("d"))
+     	);
+
+  	g.append("g")
+      	.attr("class", "axis axis--y")
+      	.call(d3.axisLeft(y)
+      		.ticks(20)
+      		//.tickSize(-width, 0, 0)
+      		//.tickFormat(d3.formatPrefix(".1", 1e6))
+      	);
 
 
   	layer.filter(function(d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+	<h1> Stacked Graph - Dataviva - D3Plus</h1>
+	<h2>School Census in Brazil by States (2007-2015)</h2>
+	<meta charset="utf-8">
+
+	<!-- load D3js -->
+	<script src="//d3plus.org/js/d3.js"></script>
+
+	<!-- load D3plus after D3js -->
+	<script src="//d3plus.org/js/d3plus.js"></script>
+
+	<!-- create container element for visualization -->
+	<div id="viz"></div>
+ 
+	<script>
+	  // sample data array
+
+		function cleanData(data){
+			//trada dados, year e values
+		   	var aux = {};
+		   	data.data.forEach(function(row){
+				var name = row[6].slice(0,3);
+				var year = row[0]
+				var value = row[3]
+
+				if(!aux[year]){ 
+					aux[year] = {};
+					aux[year]['year'] = year;
+				}
+
+				if(aux[year][name])
+					aux[year][name] += (value);
+				else
+					aux[year][name] = (value);
+			});
+
+		   	data = []
+			Object.keys(aux).forEach(function(year){
+				Object.keys(aux[year]).forEach(function(key){
+					if(key != "year"){
+						data.push({"year": year, "name":key, "value": aux[year][key]})
+					}
+				});
+
+				data.push(aux[year])
+			}); // cria lista
+
+			return data;
+		}
+
+
+
+	     d3.json("/graphs/data?graph=data_sc.json", function(data) {
+
+
+	     		data = cleanData(data);
+
+				var sample_data = [
+					{"year": 1993, "name":"alpha", "value": 20},
+					{"year": 1994, "name":"alpha", "value": 30},
+					{"year": 1995, "name":"alpha", "value": 60},
+					{"year": 1993, "name":"beta", "value": 40},
+					{"year": 1994, "name":"beta", "value": 60},
+					{"year": 1995, "name":"beta", "value": 10},
+					{"year": 1994, "name":"gamma", "value": 10},
+					{"year": 1995, "name":"gamma", "value": 40}
+				]
+
+
+				// instantiate d3plus
+				var visualization = d3plus.viz()
+					.container("#viz")  // container DIV to hold the visualization
+					.data(data)  // data to use with the visualization
+					.type("stacked")    // visualization type
+					.id("name")         // key for which our data is unique on
+					.width(1500)
+					.height(700)
+					.text("name")       // key to use for display text
+					.y("value")         // key to use for y-axis
+					.x("year")          // key to use for x-axis
+					.time("year")       // key to use for time
+					.draw() 
+
+	    });
+
+            // finally, draw the visualization!
+	</script>
+
+{% endblock %}
+

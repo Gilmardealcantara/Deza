@@ -21,6 +21,11 @@ def stacked():
 	return render_template('graphs/stacked.html')
 
 
+@mod.route('/treemap')
+def treemap():
+	return render_template('graphs/treemap.html')
+
+
 @mod.route('/data')
 def data_servise():
 	name_file = request.args.get('graph')
