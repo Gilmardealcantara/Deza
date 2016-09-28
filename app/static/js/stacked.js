@@ -39,6 +39,7 @@ function init() {
 
             $('form').change(function(){
             	$('svg')[0].remove()
+            	$('#tooltip')[0].remove()
             	updateGraph();
             	new_data = cleanData(data)
             	stacked(new_data);
@@ -129,18 +130,11 @@ function getMaxY(data){
 
 init();
 
-
 // graph
 function stacked(data){
 
 	var w = stackedConfig.width;
     var h = stackedConfig.height;
-   	var tip = d3.tip()
-	  .attr('class', 'd3-tip')
-	  .offset([-10, 0])
-	  .html(function(d) {
-	    return "<strong>Frequency:</strong> <span style='color:red'>100</span>";
-  })
 
 	var svg = d3.select('#' + stackedConfig.target)
 				.append("svg")
@@ -154,6 +148,13 @@ function stacked(data){
 	var x = d3.scaleLinear().range([0, width]),
 	    y = d3.scaleLinear().range([height, 0]),
 	    z = d3.scaleOrdinal(d3.schemeCategory10);
+
+   	var tip = d3.tip()
+		.attr('id', 'tooltip')
+		.offset([-5, 0])
+		.html(function(d) {
+   			return '<p><strong id="title1">Important label Heading</strong></p><p><strong id="title2">Important label Heading</strong></p><p><span id="value1">100</span></p><p><span id="value2">100</span></p>';
+  		})
 
 	var stack = d3.stack();
 
@@ -195,6 +196,7 @@ function stacked(data){
 	    .enter().append("g")
 	    .attr("class", "layer")
 	    .on("mouseover", function(d, i){
+	    	tip.show()
 	    	var state = this.textContent,
 	   			value = [d[0].data[keys[i]],d[d.length -1].data[keys[i]]],
 	    	 	year = [d[0].data.year , d[d.length -1].data.year];
@@ -207,8 +209,8 @@ function stacked(data){
     		
 
 	    	d3.select("#tooltip")
-	    		.style("left", xPosition + "px" )
-	    		.style("top", yPosition + "px")
+	    		//.style("left", xPosition + "px" )
+	    		//.style("top", yPosition + "px")
 	    		.select("#value2")
 	    		.text(year[1] + ": " +value[1]);
 
@@ -224,19 +226,21 @@ function stacked(data){
 	    		.select("#title2")
 	    		.text(graph.yName);
 
-	    	d3.select("#tooltip").classed("hidden", false);
+	    	//d3.select("#tooltip").classed("hidden", false);
 	    	var color = $('.layer .area')[i].style.fill;
 
 	    	$('.layer .area')[i].style.fill = change_color(color, true);	
 	    })
 	    .on("mouseout", function(d, i){
+	    	tip.hidden;
 	    	var color = $('.layer .area')[i].style.fill;
 
 	    	$('.layer .area')[i].style.fill = change_color(color, false);	
-	    	d3.select("#tooltip").classed("hidden", true);
+	    	//d3.select("#tooltip").classed("hidden", true);
 	    });
   	
 
+	svg.selectAll('.layer').call(tip);
 
   	layer.append("path")
       	.attr("class", "area")
@@ -256,20 +260,17 @@ function stacked(data){
 	    });
 
 
-    // now add titles to the axes
-    // font-family="sans-serif" font-weight="normal" font-size="22px" fill="#444" dominant-graph.baseline="central" style="text-anchor: middle;
     svg.append("text")
-        .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
-        .attr("transform", "translate("+ (margin.left/2) +","+(height/2)+")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
-        .attr("font-size", "22px")
+        .attr("text-anchor", "middle")  
+        .attr("transform", "translate("+ (margin.left/2) +","+(height/2)+")rotate(-90)") 
         .attr("fill", "#444")
         .attr("font-weight", "normal")
         .attr("font-family", "sans-serif")
         .text(graph.yName);
 
     svg.append("text")
-        .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
-        .attr("transform", "translate("+ (width/2) +","+(height + margin.left/2)+")")  // centre below axis
+        .attr("text-anchor", "middle")  
+        .attr("transform", "translate("+ (width/2) +","+(height + margin.left/2)+")")
         .attr("font-size", "22px")
         .attr("fill", "#444")
         .attr("font-weight", "normal")
