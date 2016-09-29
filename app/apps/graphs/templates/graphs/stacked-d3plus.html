@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+	<h1> Stacked Graph - Dataviva - D3Plus</h1>
+	<h2>School Census in Brazil by States (2007-2015)</h2>
+	<meta charset="utf-8">
+
+	<!-- load D3js -->
+	<script src="//d3plus.org/js/d3.js"></script>
+
+	<!-- load D3plus after D3js -->
+	<script src="//d3plus.org/js/d3plus.js"></script>
+
+	<!-- create container element for visualization -->
+	<div id="viz"></div>
+ 
+	<script>
+	  // sample data array
+
+		function cleanData(data){
+			var keys = data.headers;
+			var new_data = [];
+			data.data.forEach(function(row){
+				aux = {}
+				for(var i=0; i<keys.length; i++){
+					aux[keys[i]] = row[i];
+				}	
+				new_data.push(aux);	
+			});
+			return new_data;
+		}
+
+     	d3.json("/graphs/dataviva/sc/?depth=3", function(data) {
+     		data = cleanData(data);
+			// instantiate d3plus
+			var visualization = d3plus.viz()
+				.container("#viz")  // container DIV to hold the visualization
+				.data(data)  // data to use with the visualization
+				.type("stacked")    // visualization type
+				.id("bra_id")         // key for which our data is unique on
+				.width(1500)
+				.height(700)
+				.text("bra_id")       // key to use for display text
+				.y("num_schools")         // key to use for y-axis
+				.x("year")          // key to use for x-axis
+				.time("year")       // key to use for time
+				.draw() 
+
+    	});
+
+	</script>
+
+{% endblock %}
+

@@ -21,9 +21,9 @@ def stacked():
 	return render_template('graphs/stacked.html')
 
 
-@mod.route('/treemap')
+@mod.route('/stacked-d3plus')
 def treemap():
-	return render_template('graphs/treemap.html')
+	return render_template('graphs/stacked-d3plus.html')
 
 
 @mod.route('/data')
@@ -34,7 +34,8 @@ def data_servise():
 	return ''.join(file_request.readlines())
 
 
-@mod.route('/dataviva')
-def dataviva():
-	response = requests.get('http://dataviva.info/sc/all/show.9/all/all/')
+@mod.route('/dataviva/<dataset>/')
+def dataviva(dataset):
+	depth = request.args.get('depth')
+	response = requests.get('http://dataviva.info/'+dataset+'/all/show.'+depth+'/all/all/')
 	return jsonify(response.json())
