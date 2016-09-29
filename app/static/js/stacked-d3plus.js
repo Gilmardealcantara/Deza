@@ -22,9 +22,8 @@ function cleanData(data, bra){
 	return new_data;
 }
 	
-d3.json("/graphs/dataviva/bra/", function(bra){
-	bra = loadAttrs(bra);
-	d3.json("/graphs/dataviva/sc/?depth=3", function(data) {
+function stacked(url, bra, yAxis){
+	d3.json(url, function(data) {
 		data = cleanData(data, bra);
 		
 		var visualization = d3plus.viz()
@@ -35,9 +34,24 @@ d3.json("/graphs/dataviva/bra/", function(bra){
 			.width(1500)
 			.height(700)
 			.text("location_name")       // key to use for display text
-			.y("enrolled")         // key to use for y-axis
+			.y(yAxis)         // key to use for y-axis
 			.x("year")          // key to use for x-axis
 			.time("year")       // key to use for time
 			.draw() 
 	});
+}
+
+
+d3.json("/graphs/dataviva/bra/", function(bra){
+	bra = loadAttrs(bra);
+	var url='/graphs/dataviva/sc/?depth=3'
+	var yAxis = 'enrolled'
+	stacked(url , bra, yAxis);
+	$('#ymenu').change(function(){
+		$('#viz div')[1].remove();
+		var yAxis = $('#ymenu input:checked')[0].value
+		stacked(url , bra, yAxis);
+	});	
+
+	
 });
