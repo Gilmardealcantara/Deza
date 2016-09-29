@@ -47,8 +47,9 @@ d3.json("/graphs/dataviva/bra/", function(bra){
 	var url='/graphs/dataviva/sc/?depth=3'
 	var yAxis = 'enrolled'
 	stacked(url , bra, yAxis);
-	$('#ymenu').change(function(){
-		$('#viz div')[1].remove();
+	$('#menu').change(function(){
+		$('#viz div')[3].remove();
+		url = '/graphs/dataviva/sc/?depth=' + $('#lmenu input:checked')[0].value
 		var yAxis = $('#ymenu input:checked')[0].value
 		stacked(url , bra, yAxis);
 	});	

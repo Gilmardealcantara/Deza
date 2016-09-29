@@ -9,11 +9,23 @@
 	<script src="//d3plus.org/js/d3plus.js"></script>
 	<script type="text/javascript" src="/static/js/stacked-d3plus.js"></script>
 	<div id="viz">
-	 	<div id="ymenu" width="50%">
-		  <input type="radio" name="y" value="enrolled" checked> Enrolled
-		  <input type="radio" name="y" value="num_schools"> Num Schools	
-		  <input type="radio" name="y" value="classes"> Classes
+	 	<div id="menu">
+		 	<div id="ymenu" width="50%">
+		 		Dado :  
+			  	<input type="radio" name="y" value="enrolled" checked> Enrolled
+			  	<input type="radio" name="y" value="num_schools"> Num Schools	
+			  	<input type="radio" name="y" value="classes"> Classes
+			</div>
+		 	<div id="lmenu" width="50%">	
+		 		Por : 
+			  	<input type="radio" name="l" value="1"> Regions
+			  	<input type="radio" name="l" value="3" checked> Estados	
+			  	<input type="radio" name="l" value="5"> Mesorregiões
+			  	<input type="radio" name="l" value="7"> Microrregiões
+			  	<input type="radio" name="l" value="9"> Municípios
+			</div>
 		</div>
+
 	</div>
 
 {% endblock %}
