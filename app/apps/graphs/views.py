@@ -37,5 +37,11 @@ def data_servise():
 @mod.route('/dataviva/<dataset>/')
 def dataviva(dataset):
 	depth = request.args.get('depth')
-	response = requests.get('http://dataviva.info/'+dataset+'/all/show.'+depth+'/all/all/')
+	
+	if dataset == 'bra':
+		url = 'http://dataviva.info/attrs/'+dataset+'/'
+	else:
+		url = 'http://dataviva.info/'+dataset+'/all/show.'+depth+'/all/all/'
+
+	response = requests.get(url)
 	return jsonify(response.json())
