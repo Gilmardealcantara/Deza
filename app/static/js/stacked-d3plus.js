@@ -13,19 +13,32 @@ function cleanData(data, bra){
 	data.data.forEach(function(row){
 		aux = {}
 		for(var i=0; i<keys.length; i++){
-			if(keys[i] == 'bra_id')
+			if(keys[i] == 'bra_id'){
 				aux['location_name'] = bra[row[i]].name;
+				switch(row[i].length){
+					case 1: aux['region'] = bra[row[i]].name;
+						break;
+					case 3: aux['state'] = bra[row[i]].name;
+						break;
+					case 5: aux['mesorregion'] = bra[row[i]].name;
+						break;
+					case 7: aux['microrregion'] = bra[row[i]].name;
+						break;
+					case 9: aux['municipality'] = bra[row[i]].name; 
+						break;		
+				}
+			}
+
 			aux[keys[i]] = row[i];
 		}	
 		new_data.push(aux);	
 	});
 	return new_data;
 }
-	
-function stacked(url, bra, yAxis){
+function stacked(url, bra){
 	d3.json(url, function(data) {
 		data = cleanData(data, bra);
-		
+
 		var visualization = d3plus.viz()
 			.container("#viz")  // container DIV to hold the visualization
 			.data(data)  // data to use with the visualization
@@ -34,10 +47,21 @@ function stacked(url, bra, yAxis){
 			.width(1500)
 			.height(700)
 			.text("location_name")       // key to use for display text
-			.y(yAxis)         // key to use for y-axis
+			.y("enrolled")         // key to use for y-axis
 			.x("year")          // key to use for x-axis
 			.time("year")       // key to use for time
-			.draw() 
+			.ui([
+		      {
+		        "method" : "y",
+		        "value"  : [ "enrolled" , "num_schools", "classes" ]
+		      }
+		    ])
+			.draw()
+
+			$('#downloadcsv').on('click', function(){
+				visualization.csv(true);
+			}).show();
+
 	});
 }
 
@@ -45,14 +69,14 @@ function stacked(url, bra, yAxis){
 d3.json("/graphs/dataviva/bra/", function(bra){
 	bra = loadAttrs(bra);
 	var url='/graphs/dataviva/sc/?depth=3'
-	var yAxis = 'enrolled'
-	stacked(url , bra, yAxis);
-	$('#menu').change(function(){
-		$('#viz div')[3].remove();
+	stacked(url , bra);
+	$('#lmenu').change(function(){
+		$('#viz div')[0].remove();
 		url = '/graphs/dataviva/sc/?depth=' + $('#lmenu input:checked')[0].value
-		var yAxis = $('#ymenu input:checked')[0].value
-		stacked(url , bra, yAxis);
+		stacked(url , bra);
 	});	
 
-	
 });
+
+
+
