@@ -50,6 +50,8 @@ function stacked(url, bra){
 			.y("enrolled")         // key to use for y-axis
 			.x("year")          // key to use for x-axis
 			.time("year")       // key to use for time
+			.color("bra_id")
+			.depth(0)
 			.ui([
 		      {
 		        "method" : "y",
