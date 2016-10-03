@@ -71,6 +71,7 @@ d3.json("/graphs/dataviva/bra/", function(bra){
 	var url='/graphs/dataviva/sc/?depth=3'
 	stacked(url , bra);
 	$('#lmenu').change(function(){
+		$("#downloadcsv").prop('click', null).off('click')
 		$('#viz div')[0].remove();
 		url = '/graphs/dataviva/sc/?depth=' + $('#lmenu input:checked')[0].value
 		stacked(url , bra);
