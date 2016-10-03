@@ -97,9 +97,13 @@ function cleanData2(data, bra){
 		aux = {}
 		for(var i=0; i<keys.length; i++){
 			if(keys[i] == 'bra_id'){
-				aux['location_name'] = bra[row[i]].name;
-				aux['state'] = bra[row[i]].name;
-				aux['region'] = bra[row[i][0]].name;
+				aux['region'] = row[i][0];
+				aux['state'] = row[i].slice(0,3);
+				aux['city'] = row[i];
+				aux['region_name'] = bra[row[i][0]].name;
+				aux['state_name'] = bra[row[i].slice(0,3)].name;
+				aux['city_name'] = bra[row[i]].name;
+
 			}
 
 			aux[keys[i]] = row[i];
@@ -112,25 +116,27 @@ function cleanData2(data, bra){
 
 
 function treemap(url, bra){ // so estados
+	url='/graphs/dataviva/sc/?depth=9'
 	d3.json(url, function(data) {
 		data = cleanData2(data, bra);
 
-		var sample_data = [
-			{"value": 100, "name": "alpha", "group": "group 1"},
-			{"value": 70, "name": "beta", "group": "group 2"},
-			{"value": 40, "name": "gamma", "group": "group 2"},
-			{"value": 15, "name": "delta", "group": "group 2"},
-			{"value": 5, "name": "epsilon", "group": "group 1"},
-			{"value": 1, "name": "zeta", "group": "group 1"}
-			]
 		var visualization = d3plus.viz()
 			.container("#viz2")
 			.data(data)
 			.type("tree_map")
-			.id(["region","state"])
+			.id(["region","state", "city"])
 			.width(1500)
 			.height(700)
 			.size("enrolled")
+			.text(function(d){
+				if(d.bra_id.length == 9){
+					return d.city_name;
+				}else if(d.state.length != 3){
+					return d.region_name;
+				}else{
+					return d.state_name;
+				}
+			})
 			.ui([
 				{
 					"method": "size",
