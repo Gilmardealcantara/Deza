@@ -35,6 +35,7 @@ function cleanData(data, bra){
 	});
 	return new_data;
 }
+
 function stacked(url, bra){
 	d3.json(url, function(data) {
 		data = cleanData(data, bra);
@@ -68,10 +69,12 @@ function stacked(url, bra){
 }
 
 
+
 d3.json("/graphs/dataviva/bra/", function(bra){
 	bra = loadAttrs(bra);
 	var url='/graphs/dataviva/sc/?depth=3'
 	stacked(url , bra);
+	treemap(url , bra);
 	$('#lmenu').change(function(){
 		$("#downloadcsv").prop('click', null).off('click')
 		$('#viz div')[0].remove();
@@ -83,3 +86,57 @@ d3.json("/graphs/dataviva/bra/", function(bra){
 
 
 
+
+
+
+//---------------------------treemap
+function cleanData2(data, bra){
+	var keys = data.headers;
+	var new_data = [];
+	data.data.forEach(function(row){
+		aux = {}
+		for(var i=0; i<keys.length; i++){
+			if(keys[i] == 'bra_id'){
+				aux['location_name'] = bra[row[i]].name;
+				aux['state'] = bra[row[i]].name;
+				aux['region'] = bra[row[i][0]].name;
+			}
+
+			aux[keys[i]] = row[i];
+		}	
+		new_data.push(aux);	
+	});
+	return new_data;
+}
+
+
+
+function treemap(url, bra){ // so estados
+	d3.json(url, function(data) {
+		data = cleanData2(data, bra);
+
+		var sample_data = [
+			{"value": 100, "name": "alpha", "group": "group 1"},
+			{"value": 70, "name": "beta", "group": "group 2"},
+			{"value": 40, "name": "gamma", "group": "group 2"},
+			{"value": 15, "name": "delta", "group": "group 2"},
+			{"value": 5, "name": "epsilon", "group": "group 1"},
+			{"value": 1, "name": "zeta", "group": "group 1"}
+			]
+		var visualization = d3plus.viz()
+			.container("#viz2")
+			.data(data)
+			.type("tree_map")
+			.id(["region","state"])
+			.width(1500)
+			.height(700)
+			.size("enrolled")
+			.ui([
+				{
+					"method": "size",
+					"value"	: [ "enrolled" , "num_schools", "classes"]
+				}
+			])
+			.draw()
+	});
+}
