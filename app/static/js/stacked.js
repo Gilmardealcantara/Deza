@@ -172,17 +172,8 @@ function stacked(data){
 	    	var state = this.textContent,
 	   			value = [d[0].data[keys[i]],d[d.length -1].data[keys[i]]],
 	    	 	year = [d[0].data.year , d[d.length -1].data.year];
-	    	
-	    	var htmlListG = $('svg .layer')[i].innerHTML.split('"'),
-	    		yValue = htmlListG[htmlListG.indexOf(" y=") + 1];
-    		
-    		var xPosition = w/2, 
- 				yPosition = yValue; 
-    		
 
 	    	d3.select("#tooltip")
-	    		//.style("left", xPosition + "px" )
-	    		//.style("top", yPosition + "px")
 	    		.select("#value2")
 	    		.text(year[1] + ": " +value[1]);
 
@@ -216,8 +207,6 @@ function stacked(data){
 
   	layer.append("path")
       	.attr("class", "area")
-      	.transition()
-		.duration(1000)
       	.style("fill", function(d) { return z(d.key); })
       	.attr("d", area);
 
