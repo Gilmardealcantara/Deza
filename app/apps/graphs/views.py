@@ -22,8 +22,14 @@ def stacked():
 
 
 @mod.route('/stacked-d3plus')
-def treemap():
+def stacked_d3plus():
 	return render_template('graphs/stacked-d3plus.html')
+
+
+@mod.route('/treemap-d3plus')
+def treemap_d3plus():
+	return render_template('graphs/treemap-d3plus.html')
+
 
 
 @mod.route('/data')
