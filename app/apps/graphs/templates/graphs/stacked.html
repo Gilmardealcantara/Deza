@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+	<h1> Stacked Graph - Dataviva </h1>
+	<h2>School Census in Brazil by States (2007-2015)</h2>
+	<form>
+	  <input type="radio" name="y" value="enrolled" checked> Enrolled<br>
+	  <input type="radio" name="y" value="num_schools"> Num Schools<br>	
+	  <input type="radio" name="y" value="casses"> Classes<br>	
+	</form>
+	<section id='stacked'></section>
+	<script src="//d3js.org/d3.v4.min.js"></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script> 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>	
+	<script type="text/javascript" src="/static/js/stacked.js"></script>
+	<link rel="stylesheet" type="text/css" href="/static/css/stacked.css">
+
+{% endblock %}

@@ -1,0 +1,16 @@
+#downloadcsv {
+    position: absolute; 
+	left: 70%;
+	display: block;
+	background: #000;
+	/*TYPE*/
+	color: white;
+	text-decoration: none;
+	text-transform: uppercase;
+
+}
+
+#menu {
+	padding: 10px;
+}
+
