@@ -23,7 +23,7 @@ var area = d3.svg.area()
     .y0(height)
     .y1(function(d) { return y(d.close); });
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#graph1")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")

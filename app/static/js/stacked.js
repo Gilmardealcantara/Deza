@@ -131,7 +131,7 @@ function stacked(data){
 				.attr('width', w)
 				.attr('height', h);
 	
-	var margin = {top: 20, right: 20, bottom: 100, left: 200},
+	var margin = {top: 20, right: 20, bottom: 100, left: 50},
 	    width = svg.attr("width") - margin.left - margin.right,
 	    height = svg.attr("height") - margin.top - margin.bottom;
 

@@ -33,7 +33,7 @@ function stacked(url, bra){
 		data = cleanData(data, bra);
 
 		var visualization = d3plus.viz()
-			.container("#viz")  // container DIV to hold the visualization
+			.container("#viz1")  // container DIV to hold the visualization
 			.data(data)  // data to use with the visualization
 			.type("stacked")    // visualization type
 			.id("bra_id")         // key for which our data is unique on
