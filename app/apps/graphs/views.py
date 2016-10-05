@@ -1,7 +1,7 @@
 import os
 import requests
 from app import app
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, make_response
 from config import APP_STATIC
 
 mod = Blueprint('graphs', __name__, template_folder='templates', url_prefix='/graphs');
@@ -44,10 +44,28 @@ def data_servise():
 def dataviva(dataset):
 	depth = request.args.get('depth')
 	
-	if dataset == 'bra':
+	if dataset in ['bra', 'wld']:
 		url = 'http://dataviva.info/attrs/'+dataset+'/'
 	else:
 		url = 'http://dataviva.info/'+dataset+'/all/show.'+depth+'/all/all/'
 
 	response = requests.get(url)
 	return jsonify(response.json())
+
+
+@mod.route('/coords/<id>/')
+def coords(id="all"):
+	
+	if id == "all":
+		file_name = "bra_states.json.gz"
+	else:
+		file_name = ("{0}_munic.json.gz").format(id)
+
+	path = ( APP_STATIC.replace('data', 'app') +  "/static/json/coords/{0}" ).format(file_name)
+
+	gzip_file = open(path).read()
+	ret = make_response(gzip_file)
+	
+	ret.headers['Content-Encoding'] = "gzip"
+	ret.headers['Content-Length'] = str(len(ret.data))
+	return ret

@@ -65,7 +65,7 @@ deza.requireAttrs(['bra'], function(){
 	stacked(url , deza.bra);
 	$('#lmenu').change(function(){
 		$("#downloadcsv").prop('click', null).off('click')
-		$('#viz div')[0].remove();
+		$('#viz1 div')[0].remove();
 		url = '/graphs/dataviva/sc/?depth=' + $('#lmenu input:checked')[0].value
 		stacked(url , deza.bra);
 	});	
