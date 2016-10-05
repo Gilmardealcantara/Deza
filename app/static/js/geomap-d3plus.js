@@ -22,4 +22,4 @@ function geomap(url_coords, container){
 
 geomap(url_coords_wld, '#viz3');
 geomap('/graphs/coords/all', '#viz4');
-geomap('/graphs/coords/4mg', '#viz5')
+geomap('/graphs/coords/4mg', '#viz5');
