@@ -8,8 +8,14 @@
 	<script type="text/javascript" src="/static/js/geomap-d3plus.js"></script>
 	<!--<link rel="stylesheet" type="text/css" href="/static/css/stacked-d3plus.css">-->
 
+	<select class='blaclItem' id="select_dataset">
+		<option value="sc" selected>Censo Escolar</option>
+		<option value="rais">Salários e Emprego (RAIS)</option>
+		<option value="secex">Comércio Internacional (SECEX)</option>
+		<option value="hedu">Ensino Superior</option>
+	</select>
 
-	<select id="select_geomap">
+	<select class='blaclItem' id="select_geomap">
 	{% for item in data %}
 		{% if item[0] != "4mg"%}
 	  		<option value="{{item[0]}}">{{item[1]}}</option>
@@ -19,6 +25,7 @@
 	{% endfor %}
 	</select>
 
+	<button class='blaclItem' id="createView">Create View</button>
 
 	<div id="viz3"></div>
 	

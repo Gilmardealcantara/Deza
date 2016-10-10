@@ -61,12 +61,15 @@ function geomap(url_coords, container, attr){
 //geomap(url_coords_wld, '#viz3');
 //geomap('/graphs/coords/all', '#viz4');
 
-geomap('/graphs/coords/4mg', '#viz3', 'rais');
+
+
+geomap('/graphs/coords/4mg', '#viz3', 'sc');
 
 $('document').ready(function(){
-  $('select').change(function(){
-      bra = this.selectedOptions[0].value
+  $('#createView').on('click', function(){
+      var bra = $('#select_geomap :selected')[0].value
+      var dataset  = $('#select_dataset :selected')[0].value
       $('#viz3 div').remove()
-      geomap('/graphs/coords/' + bra, '#viz3', 'sc');      
+      geomap('/graphs/coords/' + bra, '#viz3', dataset);      
   });
 });
