@@ -1,33 +1,72 @@
 var url_coords_wld = "http://d3plus.org/topojson/countries.json"
 
+
+function cleanData(data){
+  var keys = data.headers;
+  var new_data = {};
+  data.data.forEach(function(row){
+    aux = {}
+    for(var i=0; i<keys.length; i++){
+      aux[keys[i]] = row[i];
+    } 
+    new_data[aux.bra_id] = aux; 
+  });
+  return new_data;
+}
+
+function completeData(data, bra){
+  bra.data.forEach(function(row){
+      try{
+        Object.keys(data[row.id]).forEach(function(attr){
+          row[attr] = data[row.id][attr];
+        });
+        row['completeData'] = true;
+      }catch(err){
+        row['completeData'] = false;
+      }
+  });
+
+  return bra.data
+}
+
 function geomap(url_coords, container, attr){
-
       
-  d3.json('/graphs/dataviva/' + attr, function(data){
-    // instantiate d3plus
-    var visualization = d3plus.viz()
-      .container(container)        // container DIV to hold the visualization
-      .data(data.data)        // data to use with the visualization
-      .coords(url_coords) // pass topojson coordinates
-      .type('geo_map')          // visualization type
-      .id('id')            // key for which our data is unique on
-      .text('name')             // key to use for display text
-      //.color(value)           // key for coloring countries
-      //.tooltip(value)         // keys to place in tooltip
-      .draw()  
+  d3.json('/graphs/dataviva/' + attr + '?depth=9', function(data){
+    data = cleanData(data);
+    d3.json('/graphs/dataviva/bra', function(bra){
+      data = completeData(data, bra)  
+      var index;
+      for(index=0; index < data.length; index++){
+        if(data[index]['completeData']){
+          break;
+        }
+      }
+      keys = Object.keys(data[index]);
 
+      var visualization = d3plus.viz()
+        .container(container)       
+        .data(data)        
+        .coords(url_coords) 
+        .type('geo_map')          
+        .id('id')            
+        .text('name')
+        //.color('enrolled')           
+        .tooltip(keys)//['id', 'name', 'population', 'enrolled']
+        .draw()  
+
+    });
   });
 }
 
 //geomap(url_coords_wld, '#viz3');
 //geomap('/graphs/coords/all', '#viz4');
 
-geomap('/graphs/coords/4mg', '#viz3', 'bra');
+geomap('/graphs/coords/4mg', '#viz3', 'rais');
 
 $('document').ready(function(){
   $('select').change(function(){
       bra = this.selectedOptions[0].value
       $('#viz3 div').remove()
-      geomap('/graphs/coords/' + bra, '#viz3', 'bra');      
+      geomap('/graphs/coords/' + bra, '#viz3', 'sc');      
   });
 });

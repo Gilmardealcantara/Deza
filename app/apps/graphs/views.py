@@ -43,8 +43,6 @@ def geomap_d3plus():
 	return render_template('graphs/geomap-d3plus.html', data=data)
 
 
-
-
 @mod.route('/data')
 def data_servise():
 	name_file = request.args.get('graph')

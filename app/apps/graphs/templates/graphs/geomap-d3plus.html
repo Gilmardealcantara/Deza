@@ -9,7 +9,7 @@
 	<!--<link rel="stylesheet" type="text/css" href="/static/css/stacked-d3plus.css">-->
 
 
-	<select>
+	<select id="select_geomap">
 	{% for item in data %}
 		{% if item[0] != "4mg"%}
 	  		<option value="{{item[0]}}">{{item[1]}}</option>
