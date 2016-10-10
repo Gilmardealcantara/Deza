@@ -69,7 +69,7 @@ $('document').ready(function(){
   $('#createView').on('click', function(){
       var bra = $('#select_geomap :selected')[0].value
       var dataset  = $('#select_dataset :selected')[0].value
-      $('#viz3 div').remove()
+      $('#viz3').empty()
       geomap('/graphs/coords/' + bra, '#viz3', dataset);      
   });
 });
