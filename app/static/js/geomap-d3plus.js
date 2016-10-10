@@ -1,8 +1,7 @@
 var url_coords_wld = "http://d3plus.org/topojson/countries.json"
 
-function geomap(url_coords, container){
-  var id = url_coords.split('/')[3];
-  var attr = (id == 'all' || id == '4mg' ) ? 'bra' : 'wld'  ;
+function geomap(url_coords, container, attr){
+
       
   d3.json('/graphs/dataviva/' + attr, function(data){
     // instantiate d3plus
@@ -20,6 +19,15 @@ function geomap(url_coords, container){
   });
 }
 
-geomap(url_coords_wld, '#viz3');
-geomap('/graphs/coords/all', '#viz4');
-geomap('/graphs/coords/4mg', '#viz5');
+//geomap(url_coords_wld, '#viz3');
+//geomap('/graphs/coords/all', '#viz4');
+
+geomap('/graphs/coords/4mg', '#viz3', 'bra');
+
+$('document').ready(function(){
+  $('select').change(function(){
+      bra = this.selectedOptions[0].value
+      $('#viz3 div').remove()
+      geomap('/graphs/coords/' + bra, '#viz3', 'bra');      
+  });
+});

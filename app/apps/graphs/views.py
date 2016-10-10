@@ -31,6 +31,19 @@ def treemap_d3plus():
 	return render_template('graphs/treemap-d3plus.html')
 
 
+@mod.route('/geomap-d3plus')
+def geomap_d3plus():
+	url = 'http://dataviva.info/attrs/bra/'
+	response = requests.get(url)
+	data = []
+	for row in response.json()['data']:
+		if len(row['id']) == 3:
+			data.append([row['id'], row['name']]); 
+
+	return render_template('graphs/geomap-d3plus.html', data=data)
+
+
+
 
 @mod.route('/data')
 def data_servise():
@@ -48,7 +61,6 @@ def dataviva(dataset):
 		url = 'http://dataviva.info/attrs/'+dataset+'/'
 	else:
 		url = 'http://dataviva.info/'+dataset+'/all/show.'+depth+'/all/all/'
-
 	response = requests.get(url)
 	return jsonify(response.json())
 
