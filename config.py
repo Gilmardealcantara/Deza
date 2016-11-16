@@ -15,7 +15,7 @@ insert into users (name, email, password) values('gilmar','admin@teste.com','123
 import os
 
 SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost/teste"
-
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 # __file__ refers to the file settings.py 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC = os.path.join(APP_ROOT, 'data')
