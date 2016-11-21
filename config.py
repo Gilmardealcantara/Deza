@@ -14,9 +14,12 @@ insert into users (name, email, password) values('gilmar','admin@teste.com','123
 '''
 import os
 
-SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost/teste"
+# SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost/teste"
+basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = "postgresql://gilmar:123456@localhost/gilmar"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+
 # __file__ refers to the file settings.py
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC = os.path.join(APP_ROOT, 'data')
