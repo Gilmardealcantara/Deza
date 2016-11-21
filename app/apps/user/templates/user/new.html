@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<form action="/user/new" method=post>
+  <dl>
+    <dt>Nome:
+    <dd><input type=name name=name>
+    <dt>Email:
+    <dd><input type=email name=email>
+    <dt>Password:
+    <dd><input type=password name=password>
+    <br></br>
+    <dd><input id='new' type=submit value=Create>
+  </dl>
+</form>
+
+{% endblock %}

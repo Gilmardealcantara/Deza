@@ -21,4 +21,3 @@ views = import_module('app.apps.graphs.views')
 app.register_blueprint(views.mod)
 views = import_module('app.apps.user.views')
 app.register_blueprint(views.mod)
-    
